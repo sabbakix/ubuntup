@@ -1,0 +1,99 @@
+sudo apt update
+sudo apt upgrade
+
+sudo apt install qemu-guest-agent
+
+### apache
+sudo apt install apache2 -y
+
+### ufw
+sudo ufw app list
+sudo ufw status
+
+### mysql
+sudo apt install mysql-server -y
+sudo mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+exit
+sudo mysql_secure_installation
+
+
+### php
+sudo apt install php libapache2-mod-php php-mysql -y
+php -v
+apt search php- | less
+
+### Virtual Host
+sudo mkdir /var/www/mdata.com
+sudo chown -R $USER:$USER /var/www/mdata.com
+sudo nano /etc/apache2/sites-available/mdata.com.conf
+
+<VirtualHost *:80>
+    ServerName mdata.com
+    ServerAlias www.mdata.com
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/mdata.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo a2ensite mdata.com
+sudo a2dissite 000-default
+sudo systemctl reload apache2
+nano /var/www/mdata.com/index.html
+
+<html>
+  <head>
+    <title>your_domain website</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <p>This is the landing page of <strong>MDATA</strong>.</p>
+	<p><a href="info.php" >info.php</a></p>
+  </body>
+</html>
+
+nano /var/www/mdata.com/info.php
+
+<?php
+  phpinfo();
+
+sudo apt install php-cli php-curl php-mbstring php-xml php-zip -y
+
+### config msql
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+bind-address = 0.0.0.0
+sudo systemctl restart mysql
+
+mysql
+CREATE USER 'remote_user'@'%' IDENTIFIED BY 'strongpassword';
+GRANT ALL PRIVILEGES ON *.* TO 'remote_user'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+sudo ufw allow from 192.168.0.50 to any port 3306
+ 
+### phpmyadmin 
+sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl -y
+sudo phpenmod mbstring
+sudo systemctl restart apache2
+sudo apt install php-mysql
+
+sudo mysql
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
