@@ -19,9 +19,6 @@ services:
       - 33061
   wordpress:
     image: wordpress:latest
-    networks:
-      frontend:
-          ipv4_address: 192.168.56.56
     ports:
       - 808:80
     restart: always
