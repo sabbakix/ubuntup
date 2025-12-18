@@ -4,6 +4,9 @@ services:
     image: mariadb:10.6.4-focal
     # If you really want to use MySQL, uncomment the following line
     #image: mysql:8.0.27
+    networks:
+      frontend:
+          ipv4_address: 192.168.56.56
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
@@ -15,9 +18,12 @@ services:
       - MYSQL_PASSWORD=wordpress
     expose:
       - 3306
-      - 33060
+      - 33061
   wordpress:
     image: wordpress:latest
+    networks:
+      frontend:
+          ipv4_address: 192.168.56.56
     ports:
       - 808:80
     restart: always
